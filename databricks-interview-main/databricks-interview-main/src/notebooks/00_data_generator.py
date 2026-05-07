@@ -1,5 +1,6 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -93,8 +94,7 @@ df_orders.show(5, truncate=False)
 # ── Useful follow-up: demonstrate schema evolution ─────────────────────────────
 # After writing the initial table, add a new column to show mergeSchema behavior:
 # df_v2 = df_orders.withColumn("discount_pct", (rand() * 0.3).cast("double"))
-# df_v2.write.format("delta").mode("append").option("mergeSchema","true")
-#     .saveAsTable(f"{CATALOG}.{SCHEMA}.orders")
+# df_v2.write.format("delta").mode("append").option("mergeSchema","true").saveAsTable(f"{CATALOG}.{SCHEMA}.orders")
 
 # COMMAND ----------
 
@@ -296,3 +296,7 @@ df_events.write.format("delta").mode("overwrite").saveAsTable(f"{CATALOG}.{SCHEM
 
 print(f"✅ user_events: {df_events.count():,} rows")
 df_events.groupBy("event_type").count().orderBy(col("count").desc()).show()
+
+# COMMAND ----------
+
+

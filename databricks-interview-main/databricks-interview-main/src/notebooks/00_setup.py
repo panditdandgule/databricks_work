@@ -1,5 +1,6 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -38,3 +39,7 @@ for s in schemas:
     print(f"✅ {CATALOG}.{s}")
 
 print("\n🎯 Practice environment ready!")
+
+# COMMAND ----------
+
+

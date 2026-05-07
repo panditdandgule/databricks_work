@@ -1,5 +1,6 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -191,3 +192,7 @@ spark.sql(f"RESTORE TABLE {SCHEMA}.orders TO VERSION AS OF 0")
 print("Row count after restore:")
 spark.sql(f"SELECT count(*) FROM {SCHEMA}.orders").show()
 print("✅ Scenario 1C complete")
+
+# COMMAND ----------
+
+

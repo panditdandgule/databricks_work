@@ -1,5 +1,6 @@
 # Databricks notebook source
 
+
 # COMMAND ----------
 
 # MAGIC %md
@@ -14,3 +15,7 @@
 CATALOG = "interview_practice"
 spark.sql(f"DROP CATALOG IF EXISTS {CATALOG} CASCADE")
 print("🧹 Practice environment cleaned up.")
+
+# COMMAND ----------
+
+
