@@ -22,9 +22,9 @@ dp.create_streaming_table(
 
 dp.create_auto_cdc_flow( 
 
-    target="dbacademy.sdp_silver.customer_silver", 
+    target="customer_silver", 
 
-    source="dbacademy.sdp_silver.customer_bronze_clean", 
+    source="customer_bronze_clean", 
 
     keys=["customer_id"], 
 

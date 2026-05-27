@@ -1,9 +1,6 @@
 from pyspark import pipelines as dp 
 
  
-
- 
-
 @dp.table( 
 
     name="orders_bronze", 

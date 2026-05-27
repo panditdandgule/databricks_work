@@ -18,7 +18,7 @@ def customers_bronze_raw():
 
         .option("cloudFiles.inferColumnTypes", "true") 
 
-        .load("/Volumes/dbacademy/healthcare/customers/*.json") 
+        .load("/Volumes/dbacademy/healthcare/customers/") 
 
     ) 
 
