@@ -2,7 +2,7 @@ from pyspark import pipelines as dp
 
 @dp.table( 
 
-    name="dbacademy.sdp_bronze.customers_bronze_raw", 
+    name="customers_bronze_raw", 
 
     comment="Raw customer data ingested from JSON files via Auto Loader" 
 

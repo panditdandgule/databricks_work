@@ -6,7 +6,7 @@ from pyspark import pipelines as dp
 
 @dp.table( 
 
-    name="dbacademy.sdp_silver.orders_silver", 
+    name="orders_silver", 
 
     comment="Silver orders table with data quality constraints applied" 
 

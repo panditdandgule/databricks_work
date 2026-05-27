@@ -6,7 +6,7 @@ from pyspark import pipelines as dp
 
 @dp.table( 
 
-    name="dbacademy.sdp_silver.status_silver", 
+    name="status_silver", 
 
     comment="Silver status table with filtered order statuses" 
 

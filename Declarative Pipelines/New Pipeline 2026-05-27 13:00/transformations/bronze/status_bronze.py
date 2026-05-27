@@ -6,7 +6,7 @@ from pyspark import pipelines as dp
 
 @dp.table( 
 
-    name="dbacademy.sdp_bronze.status_bronze", 
+    name="status_bronze", 
 
     comment="Raw status data ingested from JSON files via Auto Loader" 
 

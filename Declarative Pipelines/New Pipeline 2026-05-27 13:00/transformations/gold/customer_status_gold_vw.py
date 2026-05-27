@@ -3,7 +3,7 @@ from pyspark.sql.functions import col
  
 
 @dp.materialized_view( 
-    name="dbacademy.sdp_gold.customer_status_gold_vw", 
+    name="customer_status_gold_vw", 
     comment="Gold view joining customers and status data through orders" 
 
 ) 

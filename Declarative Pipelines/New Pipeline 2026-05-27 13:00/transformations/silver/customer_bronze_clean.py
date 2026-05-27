@@ -4,7 +4,7 @@ from pyspark import pipelines as dp
 
 @dp.table( 
 
-    name="dbacademy.sdp_silver.customer_bronze_clean", 
+    name="customer_bronze_clean", 
 
     comment="Cleaned customer bronze data with data quality expectations applied" 
 

@@ -10,7 +10,7 @@ from pyspark.sql.functions import expr
 
 dp.create_streaming_table( 
 
-    name="dbacademy.sdp_silver.customer_silver", 
+    name="customer_silver", 
 
     comment="Silver customer table with SCD Type 2 history tracking" 
 
