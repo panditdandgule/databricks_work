@@ -773,3 +773,7 @@ spark.sql(f"DESCRIBE DETAIL {tbl('partitioned')}").select("numFiles").show()
 
 # Drop the catalog and all its contents
 #spark.sql(f"DROP CATALOG IF EXISTS {CATALOG_NAME} CASCADE")
+
+# COMMAND ----------
+
+
