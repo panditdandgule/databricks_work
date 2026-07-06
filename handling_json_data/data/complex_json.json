@@ -1,0 +1,24 @@
+{
+  "name": "John",
+  "age": 30,
+  "address": {
+    "street": "123 Main St",
+    "city": "New York"
+  },
+  "contact": {
+    "phone": "123-456-7890",
+    "email": "john@example.com"
+  },
+  "orders": [
+    {
+      "id": 1,
+      "item": "Laptop",
+      "price": 999.99
+    },
+    {
+      "id": 2,
+      "item": "Mouse",
+      "price": 49.99
+    }
+  ]
+}
