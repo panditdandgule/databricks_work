@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 # MAGIC %md
 # MAGIC # Environment Setup for Databricks Data Engineer Certification Lab
 # MAGIC This notebook automates the setup of all Unity Catalog objects required for the Databricks Data Engineer Associate certification preparation lab.
@@ -175,3 +179,7 @@ print("="*70)
 # MAGIC -- DROP CATALOG IF EXISTS ${CATALOG_NAME} CASCADE;
 # MAGIC ```
 # MAGIC After dropping the catalog, you can re-run this notebook to recreate the environment from scratch.
+
+# COMMAND ----------
+
+

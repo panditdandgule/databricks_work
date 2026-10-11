@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 # MAGIC %md
 # MAGIC # Notebook 02: Auto Loader & Incremental Ingestion
 # MAGIC **Exam Coverage**: Section 2 (ELT with Spark SQL and Python)
@@ -790,3 +794,7 @@ display(spark.sql(f"""
 # MAGIC ---
 # MAGIC **🎉 Notebook Complete!**
 # MAGIC You've mastered Auto Loader and incremental ingestion. All bronze tables are populated. Proceed to Notebook 03 to transform this data into the Silver layer.
+
+# COMMAND ----------
+
+
