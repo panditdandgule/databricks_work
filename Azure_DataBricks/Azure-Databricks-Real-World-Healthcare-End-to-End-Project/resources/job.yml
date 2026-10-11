@@ -1,67 +1,57 @@
 resources:
   jobs:
-    end_to_end_healthcare_project_job:
-      name: end-to-end-healthcare-project-job-updated
+    end_to_end_hospital_job:
+      name: end-to-end-hospital-job
       tasks:
         - task_key: diagnosis_raw_ingestion_task
           notebook_task:
-            notebook_path: ../bronze/diagnosis_raw_data_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/bronze/diagnosis_raw_data_ingestion
             source: WORKSPACE
-        
-        - task_key: dim_diagnosis_ingestion
+        - task_key: diagnosis_silver_task
           depends_on:
             - task_key: diagnosis_raw_ingestion_task
           notebook_task:
-            notebook_path: ../silver/dim_diagnosis_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/silver/dim_diagnosis_ingestion
             source: WORKSPACE
-        
-        - task_key: hospitals_raw_ingestion_task
+        - task_key: hospital_ingestion_task
           notebook_task:
-            notebook_path: ../bronze/hospitals_raw_data_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/bronze/hospitals_raw_data_ingestion
             source: WORKSPACE
-        
-        - task_key: dim_hospital_ingestion
+        - task_key: hospital_silver_task
           depends_on:
-            - task_key: hospitals_raw_ingestion_task
+            - task_key: hospital_ingestion_task
           notebook_task:
-            notebook_path: ../silver/dim_hospital_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/silver/dim_hospital_ingestion
             source: WORKSPACE
-        
-        - task_key: patients_raw_ingestion_task
+        - task_key: patient_ingestion_task
           notebook_task:
-            notebook_path: ../bronze/patients_raw_data_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/bronze/patients_raw_data_ingestion
             source: WORKSPACE
-        
-        - task_key: dim_patient_ingestion
+        - task_key: patient_silver_task
           depends_on:
-            - task_key: patients_raw_ingestion_task
+            - task_key: patient_ingestion_task
           notebook_task:
-            notebook_path: ../silver/dim_patient_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/silver/dim_patient_ingestion
             source: WORKSPACE
-        
-        - task_key: visits_raw_ingestion_task
+        - task_key: visit_ingestion_task
           notebook_task:
-            notebook_path: ../bronze/visits_raw_data_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/bronze/visits_raw_data_ingestion
             source: WORKSPACE
-        
-        - task_key: fact_visit_ingestion
+        - task_key: visit_silver_task
           depends_on:
-            - task_key: dim_patient_ingestion
-            - task_key: dim_hospital_ingestion
-            - task_key: dim_diagnosis_ingestion
-            - task_key: visits_raw_ingestion_task
+            - task_key: diagnosis_silver_task
+            - task_key: hospital_silver_task
+            - task_key: patient_silver_task
+            - task_key: visit_ingestion_task
           notebook_task:
-            notebook_path: ../silver/fact_visit_ingestion.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/silver/fact_visit_ingestion
             source: WORKSPACE
-        
-        - task_key: resubmission_analysis
+        - task_key: final_analysis
           depends_on:
-            - task_key: fact_visit_ingestion
+            - task_key: visit_silver_task
           notebook_task:
-            notebook_path: ../gold/resubmission_analysis.ipynb
+            notebook_path: /Workspace/Users/dandgulepandit@gmail.com/databricks_work/Azure_DataBricks/Azure-Databricks-Real-World-Healthcare-End-to-End-Project/gold/resubmission_analysis
             source: WORKSPACE
-      
       queue:
         enabled: true
       performance_target: PERFORMANCE_OPTIMIZED
-
