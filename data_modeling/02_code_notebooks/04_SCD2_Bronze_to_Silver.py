@@ -114,7 +114,7 @@ from delta.tables import DeltaTable
 from pyspark.sql import functions as F
 
 # Define silver table name
-silver_table = "data_modeliing_demo.silver.scd2"
+silver_table = "data_modeling.silver.scd2"
 
 # Add processing timestamp and SCD Type 2 columns to source data
 current_ts = F.current_timestamp()
