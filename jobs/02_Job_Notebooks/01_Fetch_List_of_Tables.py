@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 df = spark.read.table("training.jobs_demo.list_of_tables")
 table_list = df.collect()
 table_list_dict=[row.asDict() for row in table_list]
@@ -15,3 +19,7 @@ dbutils.jobs.taskValues.set(
     key="tables_list",
     value=json_array_str
 )
+
+# COMMAND ----------
+
+

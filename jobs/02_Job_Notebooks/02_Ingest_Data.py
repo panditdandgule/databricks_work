@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 # MAGIC %md
 # MAGIC ## Widget to take table name as input
 
@@ -22,3 +26,7 @@ print(table_name)
 
 query=f"create or replace table training.jobs_demo.{table_name} as select * from samples.bakehouse.{table_name}"
 spark.sql(query)
+
+# COMMAND ----------
+
+

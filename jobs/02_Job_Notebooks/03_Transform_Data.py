@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
 # MAGIC %md
 # MAGIC ## Calculate country wise transactions
 
@@ -14,3 +18,7 @@
 
 # MAGIC %sql
 # MAGIC select * from training.jobs_demo.transaction_summary
+
+# COMMAND ----------
+
+

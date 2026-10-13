@@ -22,3 +22,7 @@
 
 # MAGIC %sql
 # MAGIC select * from training.jobs_demo.list_of_tables
+
+# COMMAND ----------
+
+
