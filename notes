@@ -1,0 +1,407 @@
+Architecture
+ 
+Understand our architecture how exactly we are going to build this project.
+Source data from Redshift ARC Views, HRSA files, and reference tables is ingested directly into Azure Databricks using JDBC connections. The data is stored in Bronze Delta tables for raw persistence, processed through Silver cleansing and standardization layers, enriched using business matching and fuzzy matching logic, and classified using existing Contract Pharmacy eligibility rules. The curated outputs are stored in Gold Delta tables and exposed through Databricks SQL Views for Qlik Sense reporting. Databricks Jobs orchestrate the end-to-end workflow, while Unity Catalog and SQL metadata tables provide governance, auditing, and load management for both full and incremental processing.
+
+
+For relational source:
+            Redshift Tables
+                    ↓
+            JDBC Connection
+                    ↓
+            Azure Databricks
+            ``
+            For file-based sources:
+            Blob Storage
+                    ↓
+            Auto Loader
+                    ↓
+            Azure Databricks
+Full Load
+Source → Bronze Layer
+Incremental Load
+Used for:
+•	Daily processing
+•	New and updated records only
+Source → Delta Merge → Bronze Layer
+
+Bronze Layer (Raw Data)
+Purpose
+Stores source data exactly as received.
+
+Silver Layer (Data Cleansing & Standardization)
+This layer corresponds to the current:
+
+Activities
+•	Data Cleansing
+•	Address Standardization
+•	Null Handling
+•	Data Quality Validation
+•	Deduplication
+•	Business Standardization
+
+Orchestration Layer
+•	Databricks Jobs / Workflows
+Responsible for:
+            Ingestion
+            ↓
+            Cleansing
+            ↓
+            Matching
+            ↓
+            Fuzzy Matching
+            ↓
+            Classification
+            ↓
+            Publishing
+            
+Metadata & Auditing Database
+Stores:
+•	Watermark Values
+•	Job Status
+•	Execution Logs
+•	Record Counts
+•	Audit Information
+
+Supports both Full and Incremental processing.
+
+Governance Layer
+Unity Catalog
+Provides:
+•	Centralized Data Governance
+•	Role-Based Access Control
+•	Data Lineage
+•	Schema Management
+•	Data Auditing
+
+Notifications
+Automated email alerts for:
+•	Success Notifications
+•	Failure Notifications
+•	SLA Monitoring
+•	Pipeline Health Checks
+
+Reporting Layer
+•	Databricks SQL
+Creates business-facing SQL views.
+Gold Tables
+↓
+SQL Views
+↓
+Qlik Sense
+
+Qlik Sense
+Consumes curated datasets directly from Databricks SQL Warehouse to support:
+•	Operational Reporting
+•	Business Dashboards
+•	Executive Analytics
+
+End to End Flow
+                  Data Sources
+                  ↓
+                  Data Ingestion
+                  ↓
+                  Bronze Layer
+                  (Raw Data)
+                  ↓
+                  Silver Layer
+                  (Cleansed Data)
+                  ↓
+                  Matching Rules
+                  ↓
+                  Fuzzy Matching
+                  ↓
+                  Eligibility Classification
+                  ↓
+                  Gold Layer
+                  (Business Ready Data)
+                  ↓
+                  Databricks SQL Views
+                  ↓
+                  Qlik Sense
+                  
+By directly ingesting data from Redshift and other source systems into Delta Lake. Data flows through Bronze, Silver, and Gold layers where cleansing, matching, fuzzy matching, and eligibility classification are performed. Databricks Workflows orchestrate the end-to-end pipeline, Unity Catalog provides governance and security, and Qlik Sense consumes curated business-ready datasets through Databricks SQL views. This approach improves scalability, performance, maintainability, and support for both full and incremental data processing.
+Source is Redshift
+
+Databricks can connect directly to Redshift.
+
+jdbc_url = ( "jdbc:sqlserver://server.database.windows.net:1433;" "database=ARCDB")
+df_844 = (
+    spark.read
+    .format("jdbc")
+    .option("url", redshift_url)
+    .option("dbtable", "arc_view_844")
+    .option("user", username)
+    .option("password", password)
+    .load()
+)
+
+df_844.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .saveAsTable("bronze.arc_844")
+
+
+
+Intestion
+arc_844 -> bronze.arc_844
+arc_867 -> bronze.arc_867
+silver(cleansing)
+gold(hrsa_matches)
+
+In Azure Databricks, Data is collected from source systems means redshift tables.
+Data quality and cleansing rules are applied.
+Matching and validation rules are executed.
+Fuzzy matching identifies the best possible matches.
+Business classification logic determines eligibility categories.
+Final datasets are prepared for reporting and analytics.
+Qlik Sense consumes the finalized data.
+
+        Source Views/Tables
+                |
+                v
+        Databricks Ingestion
+        (JDBC / Connector)
+                |
+                v
+        Bronze Delta Tables
+                |
+                v
+        844 Cleansing
+        867 Cleansing
+                |
+                v
+        Silver Delta Tables
+                |
+                v
+        Matching Rules
+                |
+                v
+        Fuzzy Matching
+        (Pandas UDF)
+                |
+                v
+        Business Classification
+                |
+                v
+        Gold Delta Tables
+                |
+                v
+        Databricks SQL Views
+                |
+                v
+        Qlik Sense
+
+2. Incremental Load
+Incremental load processes only new or changed records.
+
+Processing Workflow
+                      1. Read Source Data
+                      |
+                      v
+                      2. Load Raw Data to Bronze
+                      |
+                      v
+                      3. Execute 844 Cleansing
+                      |
+                      v
+                      4. Execute 867 Cleansing
+                      |
+                      v
+                      5. Apply Business Matching Rules
+                      |
+                      v
+                      6. Execute Fuzzy Matching
+                      |
+                      v
+                      7. Apply Eligibility Classification
+                      |
+                      v
+                      8. Publish Gold Tables
+                      |
+                      v
+                      9. Create SQL Views
+                      |
+                      v
+                      10. Qlik Sense Consumption
+                      
+Incremental Load Design
+            Source Tables
+                  |
+                  v
+            Read New/Changed Records
+                  |
+                  v
+            Delta MERGE
+                  |
+                  v
+            Bronze Tables
+                  |
+                  v
+            Downstream Processing
+
+
+In our project, data is read directly from Redshift tables into Azure Databricks using a Lakehouse architecture, eliminating the need for intermediate unload processes and file-based data movement.
+The ingested data is stored in Bronze Delta tables as the raw data layer. It is then processed through Silver Delta tables, where data cleansing, standardization, and business matching rules are applied. The data is further enriched using fuzzy matching algorithms and eligibility classification logic to identify and categorize Contract Pharmacy relationships.
+The final business-ready datasets are published to the Gold layer, providing curated and trusted data for reporting and analytics. Databricks Workflows orchestrate the end-to-end pipeline, including ingestion, cleansing, matching, classification, and publishing processes. Finally, Qlik Sense consumes the data directly from Databricks SQL views, enabling efficient and scalable reporting.
+
+Full Load Logic
+Used for:
+
+Initial migration
+Historical reload
+Backfill
+Reconciliation
+Read Entire Source
+
+df_844 = (
+    spark.read
+    .format("jdbc")
+    .option("url", jdbc_url)
+    .option("dbtable", "ARC_VIEW_844")
+    .option("user", username)
+    .option("password", password)
+    .load()
+)
+
+df_867 = (
+    spark.read
+    .format("jdbc")
+    .option("url", jdbc_url)
+    .option("dbtable", "ARC_VIEW_867")
+    .option("user", username)
+    .option("password", password)
+    .load()
+)
+
+######Load to Bronze
+
+df_844.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .saveAsTable("bronze.arc_844")
+
+df_867.write \
+    .format("delta") \
+    .mode("overwrite") \
+    .saveAsTable("bronze.arc_867")
+	
+######################Flow########################
+ARC_VIEW_844
+     |
+     v
+Read Entire Table
+     |
+     v
+Overwrite Bronze Table
+
+ARC_VIEW_867
+     |
+     v
+Read Entire Table
+     |
+     v
+Overwrite Bronze Table
+
+#####################################
+Incremental Load Logic
+
+Used for:
+
+Daily execution
+New records
+Updated records
+Step 1: Create Metadata Table
+##########################################
+CREATE TABLE metadata.job_control
+(
+    job_name STRING,
+    last_processed_timestamp TIMESTAMP
+);
+`
+
+##########step2 Read last_processed_timestamp from watermark
+watermark = spark.sql("""
+SELECT last_processed_timestamp
+FROM metadata.job_control
+WHERE job_name='arc_844_load'
+""").collect()[0][0]
+
+
+###########Step3 Read only changed records
+incremental_query = f"""
+(
+SELECT *
+FROM ARC_VIEW_844
+WHERE LAST_UPDATED > '{watermark}'
+) src
+"""
+
+##Only new/updated rows are loaded.
+incremental_df = (
+    spark.read
+    .format("jdbc")
+    .option("url", jdbc_url)
+    .option("dbtable", incremental_query)
+    .option("user", username)
+    .option("password", password)
+    .load()
+)
+
+########step4 Merge into bronze
+from delta.tables import DeltaTable
+
+bronze_tbl = DeltaTable.forName(
+    spark,
+    "bronze.arc_844"
+)
+
+(
+    bronze_tbl.alias("t")
+    .merge(
+        incremental_df.alias("s"),
+        "t.id_340b = s.id_340b"
+    )
+    .whenMatchedUpdateAll()
+    .whenNotMatchedInsertAll()
+    .execute()
+)
+
+
+######step5 Update Watermark
+latest_ts = incremental_df.agg(
+    {"last_updated": "max"}
+).collect()[0][0]
+
+#########################Silver Layer Processing###############################
+
+silver_844 = (
+    spark.table("bronze.arc_844")
+    .withColumn(
+        "entity_name",
+        F.upper(F.trim("entity_name"))
+    )
+    .withColumn(
+        "address",
+        F.upper(F.trim("address"))
+    )
+)
+
+silver_844.write \
+    .mode("overwrite") \
+    .saveAsTable("silver.arc_844")
+	
+##############Matching Rules###################
+matched_df = (
+    spark.table("silver.arc_844")
+    .crossJoin(
+        spark.table("silver.arc_867")
+    )
+)
+
+The solution follows a Bronze-Silver-Gold Lakehouse architecture in Azure Databricks. 
+During the initial migration, a full load ingests all historical data from Redshift into Bronze Delta tables. 
+For ongoing processing, incremental loads use a watermark-based approach to retrieve only new or updated records and 
+merge them into Delta tables using Delta Lake MERGE operations. 
+The data then flows through cleansing, matching, fuzzy matching, and eligibility classification layers before being published to Gold business datasets and consumed by Qlik Sense through Databricks SQL views.
+
