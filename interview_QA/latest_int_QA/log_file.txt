@@ -1,0 +1,14 @@
+
+111 "some Error encountered"
+222 "some Error encountered"
+333 "some Error encountered"
+444 "some Failure encountered"
+555 "some Failure encountered"
+666 "some Suspect encountered"
+777 "some Warning encountered"
+888 "some Warning encountered"
+999 "some Critical encountered"
+1000 "some error encountered"
+1001 "some FAILURE encountered"
+1002 "some Information encountered"
+This is an invalid log line
