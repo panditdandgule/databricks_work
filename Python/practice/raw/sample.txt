@@ -1,0 +1,4 @@
+   Hello from raw folder   
+  This is line two  
+	Third line with tab spaces	
+Last line without extra spaces
